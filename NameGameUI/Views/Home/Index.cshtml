@@ -1,0 +1,59 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+
+<row class="jumbotron">
+	@model NameGameUI.Models.Colleagues
+	@{
+		ViewBag.Title = "Index";
+	}
+	<row class="row" style="width:800px">
+		<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+
+			@using (Ajax.BeginForm("Compare", "Home", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "compare-result", InsertionMode = InsertionMode.Replace, OnFailure = "error" }))
+			{
+			<Fieldset>
+				<legend class="alert alert-warning" style="width:500px">Click on an image to identify @Model.nameToId</legend>
+				@Html.Hidden("soughtName", @Model.slugToId)
+				<table>
+					<tr>
+						@for (int i = 0; i < 3; i++)
+						{
+							<td>
+								<button id=@Model.colleagues[i].id name="selectedName" value=@Model.colleagues[i].slug type="submit">
+									<image src=@Model.colleagues[i].url style="height:200px; width:175px"></image>
+								</button>
+							</td>
+						}
+					</tr>
+					<tr>
+						@for (int i = 3; i < 6; i++)
+						{
+							<td>
+								<button id=@Model.colleagues[i].id name="selectedName" value=@Model.colleagues[i].slug type="submit">
+									<image src=@Model.colleagues[i].url style="height:200px; width:175px"></image>
+								</button>
+							</td>
+						}
+					</tr>
+				</table>
+				@*@foreach (var item in Model.colleagues)
+				{
+					<button id=@item.id name="selectedName" value=@item.slug type="submit">
+						<image src=@item.url style="height:300px; width:250px"></image>
+					</button>
+				}*@
+				<div id="compare-result">
+					@Html.Partial("_Evaluation", new NameGameUI.Models._Evaluation())
+				</div>
+			</Fieldset>
+			}
+		</div>
+		<span id="msg" style="color:red;" />
+	</row>
+	<span id="msg" style="color:red;" />
+	<div>
+		@Html.ActionLink("Get new images", "Index")
+	</div>
+
+
